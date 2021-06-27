@@ -3,3 +3,7 @@ __pycache__
 *.ipynb
 *.csv
 *.xlsx
+.venv/
+!ipd_bolsa/dados/*csv
+.tox/
+tox.ini
