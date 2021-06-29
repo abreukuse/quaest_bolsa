@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run ipd_bolsa\app.py
+web: sh setup.sh && streamlit run ipd_bolsa/app.py
