@@ -50,27 +50,28 @@ if empresa and ipd_score:
                               max_value=fim, 
                               value=(inicio, fim))
     # Gráfico
-    cols1,_ = st.beta_columns((1,2))
-    normalizar = cols1.checkbox(label='Normalizar')
+    # cols1,_ = st.beta_columns((1,2))
+    transformar = st.radio(label='Transformar os dados', options=('Originais', 'Normalizar', 'Remover tendência'))
     dados_agrupados = join_data(bolsa, ipd, empresa, ipd_score, comeco, final)
-    dados_agregados = melt_data(dados_agrupados, empresa, ipd_score, normalizar)
+    dados_agregados = melt_data(dados_agrupados, empresa, ipd_score, transformar)
     st.plotly_chart(grafico(dados_agregados),
                     use_container_width=True)
 
     # A partir daqui eu faço o teste de cointegração entre as séries selecionadas
     teste_cointegracao = st.sidebar.checkbox(label='Testar cointegração')
     if teste_cointegracao:
-        
+        st.write('O teste de cointegração é feito nos dados sem transformação.')
+
         # Tirar valores nulos
-        # dados = dados_agrupados.dropna()
-        dados = dados_agrupados.interpolate()
+        dados = join_data(bolsa, ipd, empresa, ipd_score, comeco, final).interpolate()
 
         # Testar a cointegração entre as séries
         cointegracao(dados, empresa, ipd_score)
     
     # Testar todas as combinações para encontrar quais pares são cointegrados
-    testar_combinacoes = st.sidebar.checkbox(label='Testar todas as combinações')
+    testar_combinacoes = st.sidebar.button(label='Testar todas as combinações')
     if testar_combinacoes:
+        st.write('Testando a cointegração em todas as combinações de dados.')
         combinacoes = [(personalidade, empresa) 
                    for personalidade in lista_personalidades[1:] 
                    for empresa in lista_empresas[1:]]
@@ -78,3 +79,5 @@ if empresa and ipd_score:
         for personalidade, empresa in stqdm(combinacoes):
             dados = join_data(bolsa, ipd, empresa, personalidade, comeco, final).interpolate()
             cointegracao(dados, empresa, personalidade, positive_results=True)
+
+

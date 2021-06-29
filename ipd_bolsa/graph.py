@@ -32,12 +32,18 @@ def join_data(dados_bolsa,
 def melt_data(data_joined, 
               empresa, 
               personalidade, 
-              normalizar=False):
+              transformar='Originais'):
+
     # normalizar os dados
-    if normalizar:
+    if transformar == 'Normalizar':
         data_joined[empresa] = normalize(data_joined[empresa])
         data_joined[personalidade] = normalize(data_joined[personalidade])
     
+    # estabilizar os dados
+    if transformar == 'Remover tendência':
+        data_joined[empresa] = data_joined[empresa].diff()
+        data_joined[personalidade] = data_joined[personalidade].diff()
+
     # transformar os dados para a versão emplilhada
     dados = pd.melt(data_joined, ['Data'], var_name='Variáveis', value_name='Valores')
 

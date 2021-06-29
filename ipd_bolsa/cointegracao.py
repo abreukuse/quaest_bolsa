@@ -2,18 +2,18 @@ import streamlit as st
 from statsmodels.tsa.stattools import adfuller, coint
 
 def show_results(cointegracao, empresa, personalidade):
-    t_statistic = cointegracao[0]
-    valor_p = cointegracao[1]
+    t_statistic = cointegracao[0].round(5)
+    valor_p = cointegracao[1].round(5)
     critical_values = cointegracao[2]
     st.markdown(f"""
         {empresa} e {personalidade}.<br>
         t-statistic =  {t_statistic}<br>
-        valor_p = {valor_p}<br>
+        valor P = {valor_p}<br>
 
         Pontos críticos.<br>
-        1%: {critical_values[0]}<br>
-        5%: {critical_values[1]}<br>
-        10%: {critical_values[2]}<br><br>
+        1%: {critical_values[0].round(5)}<br>
+        5%: {critical_values[1].round(5)}<br>
+        10%: {critical_values[2].round(5)}<br><br>
         """, unsafe_allow_html=True)
 
 def cointegracao(dados, 
@@ -43,8 +43,8 @@ def cointegracao(dados,
         
         elif positive_results==False:
             show_results(cointegracao, empresa, personalidade)
-            
+
     elif positive_results==False:
         st.write(f"""O teste de estacionariedade falhou para o par: {empresa} x {personalidade}.\n
-            Valor P {empresa}: {espresa_stationarity}.\n
-            Valor P {personalidade}: {personallidade_stationarity}""")
+            Valor P {empresa}: {espresa_stationarity.round(5)}.\n
+            Valor P {personalidade}: {personallidade_stationarity.round(5)}""")
