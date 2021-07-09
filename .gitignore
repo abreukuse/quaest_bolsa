@@ -7,3 +7,4 @@ __pycache__
 !ipd_bolsa/dados/*csv
 .tox/
 tox.ini
+notebook/*
