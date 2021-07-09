@@ -22,6 +22,6 @@ def filtro(dados: pd.DataFrame,
         periodo = dados.index
         
     if isinstance(colunas, list) and len(colunas) > 1:
-        return dados.loc[dados.index.isin(periodo), (empresas, colunas)].reset_index()
+        return dados.loc[dados.index.isin(periodo), (empresas, colunas)].reset_index().interpolate()
     else:
-        return dados.loc[dados.index.isin(periodo), (empresas, colunas)].droplevel(level=-1, axis=1).reset_index()
+        return dados.loc[dados.index.isin(periodo), (empresas, colunas)].droplevel(level=-1, axis=1).reset_index().interpolate()
